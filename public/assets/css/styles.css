@@ -1,0 +1,12 @@
+.cover{
+    display: flex;
+}
+.cover > span{
+    width: 90%;
+}
+.cover > a{
+    width: 10%;
+}
+.text-right{
+    text-align: right;
+}
