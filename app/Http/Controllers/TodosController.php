@@ -11,7 +11,7 @@ class TodosController extends Controller
         $todos = Todo::all();
         return view('about')->with('todos', $todos);
     }
-    public function show($todoid){
+    public function show(Todo $todo){
         // dd(Todo::find($todoid)->first());
         // $todo = Todo::find($todoid);
         // if($todo){
@@ -19,19 +19,16 @@ class TodosController extends Controller
         //         'name'=>'osagie'
         //     ]);
         // }
-        return view('show')->with('todo', Todo::find($todoid));
+        return view('show')->with('todo', $todo);
     }
-    public function update($id){
-        $todo = Todo::find($id);
-        
+    public function update(Todo $todo){
         return view('edit')->with('todo', $todo);
     }
-    public function deleteName($id){
-        $todo =Todo::find($id);
-        if($todo){
-            Todo::where('id' ,$id)->delete();
+    public function deleteName($todo){
+        Todo::find($todo);
+        session()->flash('success', 'Todo deleted successfully.');
+            Todo::where('id' ,$todo)->delete();
             return $this->index();
-        }
     }
     public function create(){
         return view('create');
@@ -49,29 +46,29 @@ class TodosController extends Controller
         $todo->description = $data['Description'];
         $todo->completed = false;
         $todo->save();
+        session()->flash('success', 'Todo created successfully.');
         return redirect('/about');
     }
-    // public function updateDescription($description){
-    //     $todo = Todo::find($description);
-    //     if($todo){
-    //         Todo::where('description',$description)->update([
-    //             'description' => $description
-    //         ]);
-    //     }
-    //     return view('show');
-    // }
-    public function updateField($id){
+
+    public function updateField(Todo $todo){
         $this->validate(request(),[
             'name'=>'required|min:6|max:20',
             'description' => 'required|max:200'
         ]);
         $data = request()->all();
-        $todo = Todo::find($id);
         $todo->name = $data['name'];
         $todo->description = $data['description'];
         $todo->completed = false;
+        session()->flash('success', 'Todo updated successfully.');
         $todo->save();
         return redirect('/about');
          
+    }
+    public function complete(Todo $todo){
+        $todo->completed =true;
+        session()->flash('success', 'Todo completed successfully.');
+        $todo->save();
+        return redirect('/about');
+        
     }
 }
