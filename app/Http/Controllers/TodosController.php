@@ -21,14 +21,10 @@ class TodosController extends Controller
         // }
         return view('show')->with('todo', Todo::find($todoid));
     }
-    public function updateName($id,$new_name){
+    public function update($id){
         $todo = Todo::find($id);
-        if($todo){
-            Todo::where('id',$id)->update([
-                'name'=>$new_name
-            ]);
-        }
-        return view('show')->with('todo', Todo::find($id));
+        
+        return view('edit')->with('todo', $todo);
     }
     public function deleteName($id){
         $todo =Todo::find($id);
@@ -36,6 +32,24 @@ class TodosController extends Controller
             Todo::where('id' ,$id)->delete();
             return $this->index();
         }
+    }
+    public function create(){
+        return view('create');
+    }
+    public function store(){
+        $this->validate(request(),[
+            'Name'=>'required|min:6|max:20',
+            'Description' => 'required|max:200'
+
+        ]);
+
+        $data = request()->all();
+        $todo = new Todo();
+        $todo->name =  $data['Name'];
+        $todo->description = $data['Description'];
+        $todo->completed = false;
+        $todo->save();
+        return redirect('/about');
     }
     // public function updateDescription($description){
     //     $todo = Todo::find($description);
@@ -46,4 +60,18 @@ class TodosController extends Controller
     //     }
     //     return view('show');
     // }
+    public function updateField($id){
+        $this->validate(request(),[
+            'name'=>'required|min:6|max:20',
+            'description' => 'required|max:200'
+        ]);
+        $data = request()->all();
+        $todo = Todo::find($id);
+        $todo->name = $data['name'];
+        $todo->description = $data['description'];
+        $todo->completed = false;
+        $todo->save();
+        return redirect('/about');
+         
+    }
 }

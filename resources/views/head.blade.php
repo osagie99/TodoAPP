@@ -23,7 +23,11 @@
               <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                   <li class="nav-item">
-                    <a class="avbar-brand" aria-current="page" href="/about">Todos</a>
+                    <a class="navbar-brand" aria-current="page" href="/about">Todos</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="navbar-brand" aria-current="page" href="/create">Create</a>
+                  </li>
               </div>
             </div>
           </nav>
